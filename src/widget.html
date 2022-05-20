@@ -14,7 +14,7 @@
 <script>
   let override= null;
 
-  // function toDataURL(url, callback){
+  // function toDataURL(url, callback){ //old code for receiving static QR-code
   //   let xhr = new XMLHttpRequest();
   //   let ip = "http://"+getIpOfServer()+":8000";
   //
@@ -31,7 +31,7 @@
   //   img.src = dataURL;
   // });
 
-  let connection_state = 0;
+  let connection_state = 0; //receiving QR=0, receiving bitmap=1
   const socket = new WebSocket('ws://'+getIpOfServer()+':6969');
   socket.addEventListener('message', function (event) {
     if(connection_state ==0) {
@@ -40,8 +40,6 @@
       connection_state= 1;
       return
     }
-
-
     createImageBitmap(event.data).then(imageBitmap => {
       console.log(imageBitmap);
       var myCanvas = document.getElementById('tex');

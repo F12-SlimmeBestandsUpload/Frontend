@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {idService} from "../services/id.service";
 
 @Component({
   selector: 'app-overview',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OverviewComponent implements OnInit {
 
-  constructor() { }
+  constructor(private idService: idService) { }
 
   ngOnInit(): void {
+    this.idService.getId().then((string) => {
+      console.log(string);
+    })
   }
 
 }
