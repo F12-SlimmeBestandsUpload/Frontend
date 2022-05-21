@@ -18,12 +18,12 @@ export class CameraComponent implements OnInit {
   };
   public errors: WebcamInitError[] = [];
 
-  // latest snapshot
+  // Huidige foto die op de sesse is opgeslagen
   public webcamImage: WebcamImage = null as any;
 
   // webcam snapshot trigger
   private trigger: Subject<void> = new Subject<void>();
-  // switch to next / previous / specific webcam; true/false: forward/backwards, string: deviceId
+  // Om te switchen naar andere camera. Niet zeker of eht nuttig is.
   private nextWebcam: Subject<boolean|string> = new Subject<boolean|string>();
 
   public ngOnInit(): void {
@@ -38,6 +38,7 @@ export class CameraComponent implements OnInit {
   }
 
   public toggleWebcam(): void {
+    //Om camera uit en aan te zetten. Niet zeker of het nuttig is.
     this.showWebcam = !this.showWebcam;
   }
 
@@ -46,9 +47,7 @@ export class CameraComponent implements OnInit {
   }
 
   public showNextWebcam(directionOrDeviceId: boolean|string): void {
-    // true => move forward through devices
-    // false => move backwards through devices
-    // string => move to device with given deviceId
+    // om te switchen tussen voor en achter camera. Niet zeker of dit nuttig is dus wacht ff met uitwerken.
     this.nextWebcam.next(directionOrDeviceId);
   }
 
@@ -65,4 +64,14 @@ export class CameraComponent implements OnInit {
   public get nextWebcamObservable(): Observable<boolean|string> {
     return this.nextWebcam.asObservable();
   }
+
+  public removeImage(): void {
+    // huidige foto van de sessie word verwijdert en user kan een nieuwe maken.
+    this.webcamImage = null as any;
+  }
+
+  public addToImageList(): void {
+// Hier moet de camera gesloten worden en de foto doorgegeven worden aan de lijst.
+
+}
 }
