@@ -1,0 +1,16 @@
+.inner {
+  display: table;
+  margin: 0 auto;
+  border: 1px solid black;
+}
+
+#outer {
+  border: 1px solid red;
+  width:100%
+}
+
+#camera{
+  margin-top: 150px;
+  margin-bottom: 50px;
+  padding: 10px;
+}
