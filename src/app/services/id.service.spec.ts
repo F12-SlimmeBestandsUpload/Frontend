@@ -28,12 +28,11 @@ describe('IdService', () => {
       let idFromRoute:String ="";
 
       router.navigateByUrl('/?id='+id);
-      tick();
 
       service.getId().then((string) => {
         idFromRoute = string;
       });
-      tick();
+      tick(200);
 
       expect(idFromRoute).toEqual(id.toString());
     }
