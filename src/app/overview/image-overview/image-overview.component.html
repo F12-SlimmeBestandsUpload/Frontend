@@ -1,6 +1,9 @@
 <div class="image-overview-container">
-    <app-image-element></app-image-element>
-    <app-image-element></app-image-element>
-    <app-image-element></app-image-element>
+  <ol *ngFor="let image of images">
+    <li>
+      <app-image-element (event)="removeImage($event)" [image]="image">
+      </app-image-element>
+    </li>
+  </ol>
     <div class="add-photo-button"><i class="fa-solid fa-circle-plus"></i> <p>Foto toevoegen</p></div>
 </div>
