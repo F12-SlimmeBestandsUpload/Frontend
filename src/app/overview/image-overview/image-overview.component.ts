@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { imageAndIndex } from 'src/app/shared/model/imageAndIndex.model';
 
 @Component({
   selector: 'app-image-overview',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ImageOverviewComponent implements OnInit {
 
+  @Input() images!: string[];
+  @Output() onSelect = new EventEmitter<imageAndIndex>();
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  onSelectHandler(imageAndIndex : imageAndIndex) {
+    this.onSelect.emit(imageAndIndex);
+  }
 }
