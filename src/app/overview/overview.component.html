@@ -1,0 +1,12 @@
+<div class="overview-container">
+    <div *ngIf="!selected">
+        <app-image-overview [images] = "images" (onSelect)="onSelectHandler($event)"></app-image-overview>
+        <div class="upload-container">
+            <p><i class="fa-solid fa-upload"></i> Upload Bestanden</p>
+        </div>
+    </div>
+    <div *ngIf="selected">
+        <app-enlarged-image [imageAndIndex] = "selected"></app-enlarged-image>
+    </div>
+
+</div>

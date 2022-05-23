@@ -1,0 +1,17 @@
+.upload-container{
+    display: flex;
+    border: solid;
+    border-radius: 15px;
+    border-width: 3px;
+    color: white;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+.upload-container{
+    padding: 10px;
+}
+
+p{
+    font-size: 20px;
+}
