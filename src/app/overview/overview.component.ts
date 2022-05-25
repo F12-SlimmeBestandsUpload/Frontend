@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { imageAndIndex } from '../shared/model/imageAndIndex.model';
+import { ImageAndIndex } from '../shared/model/ImageAndIndex.model'
+import { SharedService } from '../shared/shared.service';
 
 @Component({
   selector: 'app-overview',
@@ -8,15 +9,17 @@ import { imageAndIndex } from '../shared/model/imageAndIndex.model';
 })
 export class OverviewComponent implements OnInit {
 
-  @Input() images!: string[]
-  public selected!: imageAndIndex;
+  @Input() imageBlobs!: Blob[]
+  public selected!: ImageAndIndex;
 
-  constructor() { }
+  constructor(sharedService: SharedService) { 
+    this.imageBlobs = sharedService.getBlobs()
+  }
 
   ngOnInit(): void {
   }
 
-  onSelectHandler(imageAndIndex: imageAndIndex) {
+  onSelectHandler(imageAndIndex: ImageAndIndex) {
     this.selected = imageAndIndex;
   }
 

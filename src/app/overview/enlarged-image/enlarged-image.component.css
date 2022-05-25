@@ -7,3 +7,12 @@
     border: 1px solid rgba( 255, 255, 255, 0.18 );
     padding: 20px;
 }
+.img-container{
+    width: 80%;
+    height: 80%;
+}
+
+img{
+    width: 200px;
+    height: 200px;
+}

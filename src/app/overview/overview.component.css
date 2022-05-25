@@ -15,3 +15,9 @@
 p{
     font-size: 20px;
 }
+
+.overview-container{
+    padding-top: 30px;
+    display: flex;
+    justify-content: center
+}

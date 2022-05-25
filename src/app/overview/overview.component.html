@@ -1,6 +1,7 @@
+<app-top-bar></app-top-bar>
 <div class="overview-container">
     <div *ngIf="!selected">
-        <app-image-overview [images] = "images" (onSelect)="onSelectHandler($event)"></app-image-overview>
+        <app-image-overview [imageBlobs] = "imageBlobs" (onSelect)="onSelectHandler($event)"></app-image-overview>
         <div class="upload-container">
             <p><i class="fa-solid fa-upload"></i> Upload Bestanden</p>
         </div>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SharedService } from './shared/shared.service';
 
 @Component({
   selector: 'app-root',
@@ -7,12 +8,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   public images!: string[];
-  constructor(){
-    this.images = ['src/assets/testImage1.jpg','src/assets/testImage1.jpg','src/assets/testImage1.jpg','src/assets/testImage1.jpg','src/assets/testImage1.jpg','src/assets/testImage1.jpg']
-  }
-  title = 'app';
-
-  
-
+  public blobImages: Blob[] = [];
+  constructor(private sharedService: SharedService) {
+    sharedService.changeEmitted$.subscribe((blob: any) => {
+      this.blobImages.push(blob)
+    });
+  } 
 }
 

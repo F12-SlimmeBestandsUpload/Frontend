@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Subject, Observable} from 'rxjs';
 import {WebcamImage, WebcamInitError, WebcamUtil} from 'ngx-webcam';
+import { SharedService } from '../shared/shared.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -21,12 +23,18 @@ export class CameraComponent implements OnInit {
   // Huidige foto die op de sesse is opgeslagen
   public webcamImage: WebcamImage = null as any;
 
-  public imageDataBase: string;
+  public imageDataBase!: string;
 
   // webcam snapshot trigger
   private trigger: Subject<void> = new Subject<void>();
   // Om te switchen naar andere camera. Niet zeker of eht nuttig is.
   private nextWebcam: Subject<boolean|string> = new Subject<boolean|string>();
+  public router: Router;
+
+  constructor(private sharedService: SharedService, router: Router){
+    this.router = router;
+
+  }
 
   public ngOnInit(): void {
     WebcamUtil.getAvailableVideoInputs()
@@ -56,7 +64,7 @@ export class CameraComponent implements OnInit {
   public handleImage(webcamImage: WebcamImage): void {
     console.info('received webcam image', webcamImage);
     this.webcamImage = webcamImage;
-    this.imageDataBase = webcamImage.imageAsBase64;
+    this.imageDataBase = webcamImage.imageAsDataUrl;
   }
 
 
@@ -73,11 +81,12 @@ export class CameraComponent implements OnInit {
     this.webcamImage = null as any;
   }
 
-  public addToImageList(blob: Blob): void {
-// Hier moet de camera gesloten worden en de foto doorgegeven worden aan de lijst.
+  public addToImageList(): void {
+  // Hier moet de camera gesloten worden en de foto doorgegeven worden aan de lijst.
+  this.sharedService.addBlob(this.dataURItoBlob(this.imageDataBase))
+  this.router.navigate(['overview']);
 
 }
-
 
   public dataURItoBlob(imageDataBase: string) {
 

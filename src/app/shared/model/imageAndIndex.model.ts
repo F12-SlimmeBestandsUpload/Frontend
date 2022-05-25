@@ -1,10 +1,10 @@
-export class imageAndIndex {
+export class ImageAndIndex {
     index: number;
-    image: string;
+    imageBlob: Blob;
 
-    constructor(index: number, image: string) {
+    constructor(index: number, imageBlob: Blob) {
         this.index = index;
-        this.image = image;
+        this.imageBlob = imageBlob;
 
     }
 }

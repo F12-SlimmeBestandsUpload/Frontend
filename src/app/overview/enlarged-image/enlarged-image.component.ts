@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { imageAndIndex } from 'src/app/shared/model/imageAndIndex.model';
+import { ImageAndIndex } from 'src/app/shared/model/ImageAndIndex.model';
 
 @Component({
   selector: 'app-enlarged-image',
@@ -7,12 +7,18 @@ import { imageAndIndex } from 'src/app/shared/model/imageAndIndex.model';
   styleUrls: ['./enlarged-image.component.css']
 })
 export class EnlargedImageComponent implements OnInit {
+  
+  @Input() imageAndIndex!: ImageAndIndex;
+  
+  constructor() {
 
-  @Input() imageAndIndex!: imageAndIndex;
-
-  constructor() { }
+   }
 
   ngOnInit(): void {
   }
-
-}
+  imageSource(){
+    var image = new Image(100,200)
+    image.src = URL.createObjectURL(this.imageAndIndex.imageBlob)
+    return image.src
+  }
+}    
