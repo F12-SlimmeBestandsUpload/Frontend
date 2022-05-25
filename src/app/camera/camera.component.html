@@ -21,7 +21,7 @@
   </div>
 
   <div class="inner camera" *ngIf="webcamImage">
-    <img [src]="webcamImage.imageAsDataUrl"/>
+    <img [src]="this.imageDataBase"/>
     <br/>
     <button class="actionBtn" (click)="removeImage()">Delete</button>
     <button class="actionBtn" (click)="addToImageList()">Add to list</button>
