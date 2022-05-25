@@ -1,10 +1,10 @@
 <div class="image-element-container">
     <i class="fa-solid fa-image"></i>
-    <p>Foto 1</p>
-    <div class="enlarge-photo-button">
+    <p>Foto {{this.index + 1}}</p>
+    <div class="enlarge-photo-button" (click)="selectImage()">
         <p>Bekijk</p>
     </div>
-    <div class="delete-photo-button">
+    <div class="delete-photo-button" (click)="deleteImage()">
         <p>X</p>
     </div>
 </div>

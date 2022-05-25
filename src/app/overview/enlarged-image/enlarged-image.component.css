@@ -1,0 +1,55 @@
+.image-element-container{
+    background: rgba( 40, 39, 39, 0.9 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 20px );
+    -webkit-backdrop-filter: blur( 20px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    padding: 20px;
+}
+
+img{
+    width: 100%;
+}
+
+p{
+    font-size: 20px;
+    color: white;
+    text-align: center;
+}
+
+.button-container{
+    display: inline-block;
+    width: 100%;
+    display: flex;
+    margin-top: 20px;
+}
+
+.back-button{
+    width: 40%;
+    display: flex;
+    border: solid;
+    border-radius: 15px;
+    border-width: 3px;
+    color: white;
+    justify-content: center;
+    padding: 10px;
+
+    
+}
+
+.delete-button{
+    width: 60%;
+    display: flex;
+    border: solid;
+    border-radius: 15px;
+    border-width: 3px;
+    color: red;
+    justify-content: center;
+    padding: 10px;
+    margin-left: 100px;
+}
+
+.delete-button > p{
+    color: red;
+}
