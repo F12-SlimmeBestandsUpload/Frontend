@@ -1,5 +1,7 @@
-import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import { Router } from '@angular/router';
 import { ImageAndIndex } from 'src/app/shared/model/ImageAndIndex.model';
+import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({
   selector: 'app-enlarged-image',
@@ -9,10 +11,15 @@ import { ImageAndIndex } from 'src/app/shared/model/ImageAndIndex.model';
 export class EnlargedImageComponent implements OnInit, AfterViewInit {
 
   @Input() imageAndIndex!: ImageAndIndex;
+  @Output() removeSelected = new EventEmitter<Blob>();
+  
   @ViewChild("imag") imageTag!: ElementRef;
+  public sharedService: SharedService;
+  public router: Router;
 
-  constructor() {
-
+  constructor(sharedService: SharedService, router: Router) {
+    this.sharedService = sharedService;
+    this.router = router;
   }
 
   ngAfterViewInit() {
@@ -21,5 +28,14 @@ export class EnlargedImageComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
 
+  }
+
+  goBack(){
+    this.removeSelected.emit(this.imageAndIndex.imageBlob)
+  }
+
+  delete(){
+    this.sharedService.deleteBlob(this.imageAndIndex.imageBlob)
+    this.removeSelected.emit(this.imageAndIndex.imageBlob)
   }
 }

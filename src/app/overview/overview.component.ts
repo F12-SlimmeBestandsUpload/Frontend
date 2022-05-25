@@ -10,7 +10,7 @@ import { SharedService } from '../shared/shared.service';
 export class OverviewComponent implements OnInit {
 
   @Input() imageBlobs!: Blob[]
-  public selected!: ImageAndIndex;
+  public selected: ImageAndIndex | undefined;
 
   constructor(sharedService: SharedService) { 
     this.imageBlobs = sharedService.getBlobs()
@@ -21,6 +21,9 @@ export class OverviewComponent implements OnInit {
 
   onSelectHandler(imageAndIndex: ImageAndIndex) {
     this.selected = imageAndIndex;
+  }
+  removeSelectHandler(blob: Blob){
+    this.selected = undefined;
   }
 
 }
