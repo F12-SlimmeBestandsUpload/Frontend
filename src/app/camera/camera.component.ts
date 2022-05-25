@@ -29,7 +29,7 @@ export class CameraComponent implements OnInit {
   private trigger: Subject<void> = new Subject<void>();
   // Om te switchen naar andere camera. Niet zeker of eht nuttig is.
   private nextWebcam: Subject<boolean|string> = new Subject<boolean|string>();
-  public router: Router;
+  private router: Router;
 
   constructor(private sharedService: SharedService, router: Router){
     this.router = router;

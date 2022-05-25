@@ -1,4 +1,4 @@
 <div class="image-overview-container">
     <app-image-element *ngFor="let imageBlob of imageBlobs; let i = index" [index] = "i" [imageBlob] = "imageBlob" (SendSelectedImage) = "onSelectHandler($event)"></app-image-element>
-    <div class="add-photo-button"><i class="fa-solid fa-circle-plus"></i> <p>Foto toevoegen</p></div>
+    <div class="add-photo-button" (click)="addPhoto()"><i class="fa-solid fa-circle-plus"></i> <p>Foto toevoegen</p></div>
 </div>

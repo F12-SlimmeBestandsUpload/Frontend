@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ImageAndIndex } from 'src/app/shared/model/ImageAndIndex.model';
+import { SharedService } from 'src/app/shared/shared.service';
 
 
 @Component({
@@ -13,8 +14,11 @@ export class ImageElementComponent implements OnInit {
   @Output() SendSelectedImage = new EventEmitter<ImageAndIndex>();
 
   public imageAndIndex!: ImageAndIndex;
+  public sharedService: SharedService;
 
-  constructor() { }
+  constructor(sharedService: SharedService) {
+    this.sharedService = sharedService;
+   }
 
 
   ngOnInit(): void {
@@ -22,7 +26,10 @@ export class ImageElementComponent implements OnInit {
       imageBlob : this.imageBlob,
       index : this.index + 1
     }
+  }
 
+  deleteImage(){
+    this.sharedService.deleteBlob(this.imageBlob);
   }
 
   selectImage(){
