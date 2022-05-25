@@ -1,0 +1,28 @@
+.image-overview-container{
+    background: rgba( 40, 39, 39, 0.9 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 20px );
+    -webkit-backdrop-filter: blur( 20px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    padding: 20px;
+}
+
+.add-photo-button{
+    display: flex;
+    justify-content: center;
+    border: solid;
+    border-color: white;
+    border-radius: 15px;
+    border-width: 3px;
+    padding: 10px;
+    width: 250px;
+    color: white;
+    margin: auto;
+    width: 50%;
+    margin-top: 30px;
+}
+
+p{
+    margin-left: 10px;
+}
