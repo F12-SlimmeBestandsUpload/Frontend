@@ -13,8 +13,10 @@ describe('UploadService', () => {
         return new Observable((observer) => observer.next(expectedJson))
     }};
     let service = mockService as UploadService;
+
     service.upload([], "", "").subscribe(json => {
       expect(json).toEqual(expectedJson);
     });
+
   });
 });
