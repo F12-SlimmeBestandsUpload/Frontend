@@ -10,7 +10,7 @@ describe('UploadService', () => {
     const expectedJson = JSON.stringify({msg: "done"});
     const expectedObservable = new Observable((observer) => observer.next(expectedJson))
     let mockService = {upload: (blobs: Blob[], id: string, key: string) => {
-        return new Observable((observer) => observer.next(expectedJson))
+        return expectedObservable
     }};
     let service = mockService as UploadService;
 
