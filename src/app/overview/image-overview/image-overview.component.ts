@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { imageAndIndex } from 'src/app/shared/model/imageAndIndex.model';
+import { Router } from '@angular/router';
+import { ImageAndIndex } from 'src/app/shared/model/ImageAndIndex.model';
 
 @Component({
   selector: 'app-image-overview',
@@ -8,15 +9,22 @@ import { imageAndIndex } from 'src/app/shared/model/imageAndIndex.model';
 })
 export class ImageOverviewComponent implements OnInit {
 
-  @Input() images!: string[];
-  @Output() onSelect = new EventEmitter<imageAndIndex>();
+  @Input() imageBlobs!: Blob[];
+  @Output() onSelect = new EventEmitter<ImageAndIndex>();
+  private router: Router;
 
-  constructor() { }
+  constructor(router: Router) { 
+    this.router = router;
+  }
 
   ngOnInit(): void {
   }
 
-  onSelectHandler(imageAndIndex : imageAndIndex) {
+  onSelectHandler(imageAndIndex : ImageAndIndex) {
     this.onSelect.emit(imageAndIndex);
+  }
+
+  addPhoto(){
+    this.router.navigate(["camera"])
   }
 }

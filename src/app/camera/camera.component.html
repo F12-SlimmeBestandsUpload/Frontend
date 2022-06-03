@@ -12,7 +12,7 @@
             (initError)="handleInitError($event)"
     ></webcam>
     <br/>
-    <button class=" actionBtn" (click)="triggerSnapshot();">Take A Snapshot</button>
+    <button class=" actionBtn" (click)="triggerSnapshot();">Maak foto</button>
     <!-- <button class="actionBtn" (click)="toggleWebcam();">Toggle Webcam</button> -->
     <br/>
    <!-- <button class="actionBtn" (click)="showNextWebcam(true);" [disabled]="!multipleWebcamsAvailable">Next Webcam</button> -->
@@ -20,11 +20,12 @@
     <br/>
   </div>
 
-  <div class="inner camera" id="picture" *ngIf="webcamImage">
-    <img [src]="webcamImage.imageAsDataUrl"/>
+
+  <div class="inner camera" *ngIf="webcamImage">
+    <img [src]="this.imageDataBase"/>
     <br/>
-    <button class="actionBtn" (click)="removeImage()">Delete</button>
-    <button class="actionBtn" (click)="addToImageList()">Add to list</button>
+    <button class="actionBtn" (click)="removeImage()">Verwijder</button>
+    <button class="actionBtn" (click)="addToImageList()">Toevoegen aan lijst</button>
   </div>
 
 

@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { imageAndIndex } from '../shared/model/imageAndIndex.model';
+import { ImageAndIndex } from '../shared/model/ImageAndIndex.model'
+import { SharedService } from '../services/shared.service';
+import { UploadService } from '../services/upload.service';
+import { EncryptionService} from "../../encryption-service/encryption.service";
 
 @Component({
   selector: 'app-overview',
@@ -8,16 +11,35 @@ import { imageAndIndex } from '../shared/model/imageAndIndex.model';
 })
 export class OverviewComponent implements OnInit {
 
-  @Input() images!: string[]
-  public selected!: imageAndIndex;
+  @Input() imageBlobs!: Blob[]
+  public selected: ImageAndIndex | undefined;
 
-  constructor() { }
+
+  constructor(private sharedService: SharedService, private uploadService: UploadService,
+              private encryptionService: EncryptionService) {
+
+    this.imageBlobs = sharedService.getBlobs()
+  }
 
   ngOnInit(): void {
   }
 
-  onSelectHandler(imageAndIndex: imageAndIndex) {
+  onSelectHandler(imageAndIndex: ImageAndIndex) {
     this.selected = imageAndIndex;
   }
+  removeSelectHandler(){
+    this.selected = undefined;
+  }
 
+  encryptBlob(key: any) {
+    return this.encryptionService.encryptEachBlob(key, this.imageBlobs)
+  }
+
+  async uploadBlobs(){
+    let key = await this.encryptionService.generateKey();
+    let blobs = await this.encryptBlob(key);
+    let base64Key = await this.encryptionService.keyToBase64(key);
+
+    this.uploadService.upload(blobs, base64Key).subscribe();
+  }
 }
