@@ -15,16 +15,16 @@ export class EncryptionService {
     }, key, buffer)
   }
 
-  eachBlobInArray(key: CryptoKey, blobs: Blob[]): Promise<ArrayBuffer[]> {
+  encryptEachBlob(key: CryptoKey, blobs: Blob[]): Promise<Blob[]> {
     let count = 0;
-    let result: ArrayBuffer[] = [];
+    let result: Blob[] = [];
 
     return new Promise(async (resolve) => {
       for (let i = 0; i < blobs.length; i++) {
         const blob = blobs[i];
         const buffer = await blob.arrayBuffer();
 
-        const encrypted: ArrayBuffer = await this.encrypt(key, buffer);
+        const encrypted: Blob = await this.encrypt(key, buffer);
 
         result.push(encrypted);
         count++;
@@ -48,5 +48,13 @@ export class EncryptionService {
       length: 256
     }, true, ["encrypt", "decrypt"]);
     return key;
+  }
+
+  async keyToBase64(key: CryptoKey): Promise<string> {
+    const exported = await window.crypto.subtle.exportKey(
+      "raw",
+      key
+    );
+    return btoa(String.fromCharCode(...new Uint8Array(exported)));
   }
 }

@@ -23,7 +23,6 @@ export class OverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.encryptionService.encrypt("awkwardly", this.encryptionService.eachBlobInArray());
   }
 
   onSelectHandler(imageAndIndex: ImageAndIndex) {
@@ -32,7 +31,16 @@ export class OverviewComponent implements OnInit {
   removeSelectHandler(){
     this.selected = undefined;
   }
-  uploadBlobs(){
-    this.uploadService.upload(this.imageBlobs,"string")
+
+  encryptBlob(key: any) {
+    return this.encryptionService.encryptEachBlob(key, this.imageBlobs)
+  }
+
+  async uploadBlobs(){
+    let key = await this.encryptionService.generateKey();
+    let blobs = await this.encryptBlob(key);
+    let base64Key = await this.encryptionService.keyToBase64(key);
+
+    this.uploadService.upload(blobs, base64Key).subscribe();
   }
 }
