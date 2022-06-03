@@ -16,14 +16,13 @@ export class OverviewComponent implements OnInit {
   public selected: ImageAndIndex | undefined;
 
 
-  constructor(private sharedService: SharedService, private uploadService: UploadService, 
+  constructor(private sharedService: SharedService, private uploadService: UploadService,
               private encryptionService: EncryptionService) {
 
     this.imageBlobs = sharedService.getBlobs()
   }
 
   ngOnInit(): void {
-    // this.encryptionService.encrypt("awkwardly", this.encryptionService.eachBlobInArray());
   }
 
   onSelectHandler(imageAndIndex: ImageAndIndex) {
@@ -32,7 +31,16 @@ export class OverviewComponent implements OnInit {
   removeSelectHandler(){
     this.selected = undefined;
   }
+
+  encryptBlob(key: any) {
+    return this.encryptionService.encryptEachBlob(key, this.imageBlobs)
+  }
+
   uploadBlobs(){
-    this.uploadService.upload(this.imageBlobs,"string")
+    let key = this.encryptionService.generateKey().then((valueKey => {
+      this.encryptBlob(key).then((value => {
+        this.uploadService.upload(value, valueKey)
+      }))
+    }));
   }
 }
