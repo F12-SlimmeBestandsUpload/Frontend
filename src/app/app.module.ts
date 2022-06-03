@@ -16,7 +16,7 @@ import { EnlargedImageComponent } from './overview/enlarged-image/enlarged-image
 @NgModule({
   declarations: [
     AppComponent,
-    CameraComponent
+    CameraComponent,
     OverviewComponent,
     TopBarComponent,
     ImageOverviewComponent,

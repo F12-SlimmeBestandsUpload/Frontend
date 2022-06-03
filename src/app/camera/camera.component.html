@@ -5,7 +5,7 @@
   </div>
 
   <div class="inner camera" *ngIf="!webcamImage">
-    <webcam [height]="500" [width]="500" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
+    <webcam [height]="setHeightCamera()" [width]="setWidthCamera()" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
             [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable"
             [videoOptions]="videoOptions"
             [imageQuality]="1"
@@ -20,7 +20,7 @@
     <br/>
   </div>
 
-  <div class="inner camera" *ngIf="webcamImage">
+  <div class="inner camera" id="picture" *ngIf="webcamImage">
     <img [src]="webcamImage.imageAsDataUrl"/>
     <br/>
     <button class="actionBtn" (click)="removeImage()">Delete</button>

@@ -12,6 +12,7 @@ export class CameraComponent implements OnInit {
   public showWebcam = true;
   public allowCameraSwitch = true;
   public multipleWebcamsAvailable = false;
+  public screenWidth = screen.width;
   public videoOptions: MediaTrackConstraints = {
     // width: {ideal: 1024},
     // height: {ideal: 576}
@@ -21,7 +22,7 @@ export class CameraComponent implements OnInit {
   // Huidige foto die op de sesse is opgeslagen
   public webcamImage: WebcamImage = null as any;
 
-  public imageDataBase: string;
+  public imageDataBase: string | undefined;
 
   // webcam snapshot trigger
   private trigger: Subject<void> = new Subject<void>();
@@ -33,15 +34,13 @@ export class CameraComponent implements OnInit {
       .then((mediaDevices: MediaDeviceInfo[]) => {
         this.multipleWebcamsAvailable = mediaDevices && mediaDevices.length > 1;
       });
+
+
+
   }
 
   public triggerSnapshot(): void {
     this.trigger.next();
-  }
-
-  public toggleWebcam(): void {
-    //Om camera uit en aan te zetten. Niet zeker of het nuttig is.
-    this.showWebcam = !this.showWebcam;
   }
 
   public handleInitError(error: WebcamInitError): void {
@@ -73,9 +72,36 @@ export class CameraComponent implements OnInit {
     this.webcamImage = null as any;
   }
 
-  public addToImageList(blob: Blob): void {
+  public addToImageList(): void {
 // Hier moet de camera gesloten worden en de foto doorgegeven worden aan de lijst.
 
+}
+
+public setWidthCamera(): number{
+    if(this.screenWidth < 900  && this.screenWidth > 500){
+
+      return 400
+
+    } else if(this.screenWidth < 500){
+      return 300
+    }else {
+
+      return 500
+
+    }
+}
+
+public setHeightCamera(): number {
+  if(this.screenWidth < 900 && this.screenWidth > 500){
+    return 400
+
+  } else if(this.screenWidth < 500){
+    return 300
+  }
+
+  else{
+    return 500
+  }
 }
 
 
