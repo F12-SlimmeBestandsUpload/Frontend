@@ -49,4 +49,12 @@ export class EncryptionService {
     }, true, ["encrypt", "decrypt"]);
     return key;
   }
+
+  async keyToBase64(key: CryptoKey): Promise<string> {
+    const exported = await window.crypto.subtle.exportKey(
+      "raw",
+      key
+    );
+    return btoa(String.fromCharCode(...new Uint8Array(exported)));
+  }
 }

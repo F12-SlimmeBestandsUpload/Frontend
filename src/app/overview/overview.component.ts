@@ -36,11 +36,13 @@ export class OverviewComponent implements OnInit {
     return this.encryptionService.encryptEachBlob(key, this.imageBlobs)
   }
 
-  uploadBlobs(){
-    let key = this.encryptionService.generateKey().then((valueKey => {
-      this.encryptBlob(key).then((value => {
-        this.uploadService.upload(value, valueKey)
-      }))
-    }));
+  async uploadBlobs(){
+    let key = await this.encryptionService.generateKey();
+
+    let blobs = await this.encryptBlob(key);
+
+    let base64Key = await this.encryptionService.keyToBase64(key);
+
+    this.uploadService.upload(blobs, base64Key).subscribe();
   }
 }
