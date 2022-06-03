@@ -7,12 +7,13 @@ import { Injectable } from "@angular/core";
 export class EncryptionService {
 
   encrypt(key: CryptoKey, buffer: ArrayBuffer) {
-    let iv = window.crypto.getRandomValues(new Uint8Array(buffer));
+    let iv = window.crypto.getRandomValues(new Uint8Array(12));
 
-    return window.crypto.subtle.encrypt({
+    let arrayBuffer = window.crypto.subtle.encrypt({
       name: "AES-GCM",
       iv: iv
     }, key, buffer)
+    return new Blob([new Uint8Array(buffer)]);
   }
 
   encryptEachBlob(key: CryptoKey, blobs: Blob[]): Promise<Blob[]> {

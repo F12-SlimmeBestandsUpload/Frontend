@@ -40,6 +40,7 @@ export class OverviewComponent implements OnInit {
     let blobs = await this.encryptBlob(key);
     let base64Key = await this.encryptionService.keyToBase64(key);
 
+    console.log(blobs);
     this.uploadService.upload(blobs, base64Key).subscribe();
   }
 }
