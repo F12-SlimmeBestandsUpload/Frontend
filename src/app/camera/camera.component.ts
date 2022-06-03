@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Subject, Observable} from 'rxjs';
 import {WebcamImage, WebcamInitError, WebcamUtil} from 'ngx-webcam';
-import { SharedService } from '../shared/shared.service';
+import { SharedService } from '../services/shared.service';
 import { Router } from '@angular/router';
 
 

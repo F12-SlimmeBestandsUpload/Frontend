@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ImageAndIndex } from '../shared/model/ImageAndIndex.model'
-import { SharedService } from '../shared/shared.service';
-import { UploadService } from '../upload_service/upload.service';
+import { SharedService } from '../services/shared.service';
+import { UploadService } from '../services/upload.service';
 
 
 @Component({

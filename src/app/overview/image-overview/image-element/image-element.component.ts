@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ImageAndIndex } from 'src/app/shared/model/ImageAndIndex.model';
-import { SharedService } from 'src/app/shared/shared.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 
 @Component({
