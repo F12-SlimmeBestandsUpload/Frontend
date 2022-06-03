@@ -14,7 +14,7 @@ describe('UploadService', () => {
     }};
     let service = mockService as UploadService;
 
-    service.upload([], "", "").subscribe(json => {
+    service.upload([], "").subscribe(json => {
       expect(json).toEqual(expectedJson);
     });
 

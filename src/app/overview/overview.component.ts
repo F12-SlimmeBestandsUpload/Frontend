@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ImageAndIndex } from '../shared/model/ImageAndIndex.model'
-import { SharedService } from '../shared/shared.service';
-
+import { SharedService } from '../services/shared.service';
+import { UploadService } from '../services/upload.service';
 import { UploadService } from '../upload_service/upload.service';
 import { EncryptionService} from "../../encryption-service/encryption.service";
 
@@ -16,7 +16,7 @@ export class OverviewComponent implements OnInit {
   public selected: ImageAndIndex | undefined;
 
 
-  constructor(private sharedService: SharedService, private uploadService: UploadService, 
+  constructor(private sharedService: SharedService, private uploadService: UploadService,
               private encryptionService: EncryptionService) {
 
     this.imageBlobs = sharedService.getBlobs()

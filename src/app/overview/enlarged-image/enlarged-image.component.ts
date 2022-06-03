@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
 import { ImageAndIndex } from 'src/app/shared/model/ImageAndIndex.model';
-import { SharedService } from 'src/app/shared/shared.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-enlarged-image',
