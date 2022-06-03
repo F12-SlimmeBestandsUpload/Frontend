@@ -38,9 +38,7 @@ export class OverviewComponent implements OnInit {
 
   async uploadBlobs(){
     let key = await this.encryptionService.generateKey();
-
     let blobs = await this.encryptBlob(key);
-
     let base64Key = await this.encryptionService.keyToBase64(key);
 
     this.uploadService.upload(blobs, base64Key).subscribe();
