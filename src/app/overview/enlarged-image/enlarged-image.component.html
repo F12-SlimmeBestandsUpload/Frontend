@@ -1,0 +1,14 @@
+<div class="image-element-container">
+    <p>Foto {{imageAndIndex.index}}</p>
+    <div class="img-container">
+        <img #imag src="" alt="" >
+    </div>
+    <div class="button-container">
+        <div class="back-button"(click)="goBack()">
+            <p><i class="fa-solid fa-arrow-left"></i> Terug</p>
+        </div>
+        <div class="delete-button" (click)="delete()">
+            <p><i class="fa-solid fa-trash-can"></i> Verwijder</p>
+        </div>
+    </div>
+</div>
