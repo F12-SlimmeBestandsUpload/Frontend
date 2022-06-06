@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ImageAndIndex } from '../shared/model/ImageAndIndex.model'
 import { SharedService } from '../services/shared.service';
 import { UploadService } from '../services/upload.service';
-import { EncryptionService} from "../../encryption-service/encryption.service";
+import { EncryptionService} from "../services/encryption.service";
 
 @Component({
   selector: 'app-overview',
