@@ -1,0 +1,33 @@
+body{
+  background: rgb(122,3,125);
+  background: linear-gradient(150deg, rgba(122,3,125,1) 0%, rgba(175,133,246,1) 33%, rgba(100,100,255,1) 65%, rgba(59,104,154,1) 100%);
+  min-width: 100%;
+  min-height: 100vh;
+}
+.container{
+  width: 500px;
+  height: 500px;
+  margin: auto;
+  margin-top: 300px;
+  background: white;
+  border-radius: 10px;
+  border-color: black;
+  border-style: solid;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.text{
+  margin-left: 10px;
+  margin-top: 10px;
+  height:100px;
+  font-size: 34px;
+}
+#result{
+  width:200px;
+  height:200px;
+}
+#tex{
+  width:300px;
+  height:300px;
+}

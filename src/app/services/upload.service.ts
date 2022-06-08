@@ -11,6 +11,7 @@ export class UploadService {
     public id!: string;
     constructor(private http: HttpClient,private idService:idService) {
         this.idService.getId().then(id =>{
+          console.log(id)
             this.id = id;
         })
      }

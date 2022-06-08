@@ -12,6 +12,7 @@ import { ImageOverviewComponent } from './overview/image-overview/image-overview
 import { ImageElementComponent } from './overview/image-overview/image-element/image-element.component';
 import { EnlargedImageComponent } from './overview/enlarged-image/enlarged-image.component';
 import { WebcamModule } from "ngx-webcam";
+import { idService} from "./services/id.service";
 
 @NgModule({
   declarations: [
