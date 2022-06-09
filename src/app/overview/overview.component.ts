@@ -37,9 +37,18 @@ export class OverviewComponent implements OnInit {
 
   async uploadBlobs(){
     let key = await this.encryptionService.generateKey();
+    console.log(this.sharedService.getBlobs()[0])
     let blobs = await this.encryptBlob(key);
     let base64Key = await this.encryptionService.keyToBase64(key);
+    let decryptedBlob = await this.encryptionService.decrypt(key, await (await this.encryptBlob(key))[0].arrayBuffer());
+    decryptedBlob = new Blob([new Uint8Array(decryptedBlob)])
+    decryptedBlob = decryptedBlob.slice(0, decryptedBlob.size, "image/jpeg")
 
+    console.log(blobs);
+    this.sharedService.addBlob(decryptedBlob);
+    if(await decryptedBlob.arrayBuffer()== await blobs[0].arrayBuffer()){
+      console.log("het werkt")
+    }
     console.log(blobs);
     this.uploadService.upload(blobs, base64Key).subscribe();
   }

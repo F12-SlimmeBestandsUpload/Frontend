@@ -5,13 +5,13 @@ import { Injectable } from "@angular/core";
 })
 
 export class EncryptionService {
-
+  private iv = window.crypto.getRandomValues(new Uint8Array(12));
   async encrypt(key: CryptoKey, buffer: ArrayBuffer) {
-    let iv = window.crypto.getRandomValues(new Uint8Array(12));
+
 
     let arrayBuffer = await window.crypto.subtle.encrypt({
       name: "AES-GCM",
-      iv: iv
+      iv: this.iv
     }, key, buffer)
     return new Blob([new Uint8Array(arrayBuffer)]);
   }
@@ -39,7 +39,8 @@ export class EncryptionService {
 
   decrypt(key: any, buffer: ArrayBuffer) {
     return window.crypto.subtle.decrypt({
-      name: "AES-GCM"
+      name: "AES-GCM",
+      iv: this.iv
     }, key, buffer)
   }
 
