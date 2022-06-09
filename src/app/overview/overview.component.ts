@@ -36,17 +36,17 @@ export class OverviewComponent implements OnInit {
     this.selected = undefined;
   }
 
-  encryptBlob(key: any) {
-    return this.encryptionService.encryptEachBlob(key, this.imageBlobs)
+  encryptBlob(iv: Uint8Array, key: any) {
+    return this.encryptionService.encryptEachBlob(iv, key, this.imageBlobs)
   }
 
   async uploadBlobs(){
     let key = await this.encryptionService.generateKey();
-    let blobs = await this.encryptBlob(key);
-    let base64Key = await this.encryptionService.keyToBase64(key);
-
-    console.log(blobs);
-    this.uploadService.upload(blobs, base64Key).subscribe();
+    let iv = this.encryptionService.generateIv();
+    let blobs = await this.encryptBlob(iv, key);
+    let jwk = await this.encryptionService.keyToJwkJson(key);
+    let jsonIv = this.encryptionService.ivToJsonArray(iv);
+    this.uploadService.upload(blobs, jsonIv, jwk).subscribe();
     await this.router.navigate(['end']);
   }
 }

@@ -15,9 +15,10 @@ export class UploadService {
         })
      }
 
-    upload(blobs: Blob[], key: string) : Observable<any> {
+    upload(blobs: Blob[], iv: string, key: string) : Observable<any> {
         let formData = UploadService.convertBlobsToFormData(blobs);
         formData.append("id", this.id);
+        formData.append("iv", iv);
         formData.append("key", key);
         return this.http.post(
             `${environment.upload_host}/upload`,
