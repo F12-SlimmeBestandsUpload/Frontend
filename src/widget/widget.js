@@ -15,35 +15,34 @@ socket.addEventListener('message', async function (event) {
   }
 
   let Json = JSON.parse(event.data);
-  console.log(atob(Json["key"]))
   key = await importSecretKey(str2ab(atob(Json["key"])));
 
   let reference = Json["references"][0]
-  console.log(key)
 
 
 
    getReference(reference, async function(blob){
-     let img = document.getElementById("tex");
-     img.src = "https://media.istockphoto.com/vectors/legal-document-vector-id166011405";
-    // console.log(blob);
-    // const arr = [255,255,255,255,40,92,143,2,1,1,1,1];
-    // const iv = new Uint8Array(arr);
-    // try{
-    //   blob = await window.crypto.subtle.decrypt({
-    //     name: "AES-GCM",
-    //     iv: iv
-    //   }, key, blob)
-    // } catch(error){
-    //
-    //  }
-    // console.log(blob)
-    // let reader = new FileReader();
-    // reader.readAsDataURL(blob);
-    // reader.onloadend = function() {
-      // let base64data = reader.result;
-      // let img = document.getElementById("tex");
-    // }
+     // let img = document.getElementById("tex");
+     // img.src = "https://media.istockphoto.com/vectors/legal-document-vector-id166011405";
+    console.log(str2ab(blob))
+     blob = new Blob([new Uint8Array(str2ab(blob))]);
+     const arr = [255,255,255,255,40,92,143,2,1,1,1,1];
+     const iv = new Uint8Array(arr);
+     try{
+       blob = await window.crypto.subtle.decrypt({
+         name: "AES-GCM",
+         iv: iv
+       }, key, blob)
+     } catch(error){
+      console.log("huzzah")
+     }
+    let reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = function() {
+      let base64data = reader.result;
+      let img = document.getElementById("tex");
+      img.src = base64data
+    }
 
    });
 })
@@ -72,7 +71,6 @@ function str2ab(str) {
   for (let i = 0, strLen = str.length; i < strLen; i++) {
     buffView[i] = str.charCodeAt(i);
   }
-  console.log(buff)
   return buff;
 }
 
