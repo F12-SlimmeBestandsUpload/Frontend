@@ -1,0 +1,32 @@
+<div id="outer">
+
+  <div class="inner">
+      <p id="headerText">Maak een foto van uw document</p>
+  </div>
+
+  <div class="inner camera" *ngIf="!webcamImage">
+    <webcam [height]="setHeightCamera()" [width]="setWidthCamera()" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
+            [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable"
+            [videoOptions]="videoOptions"
+            [imageQuality]="1"
+            (initError)="handleInitError($event)"
+    ></webcam>
+    <br/>
+    <button class=" actionBtn" (click)="triggerSnapshot();">Maak foto</button>
+    <!-- <button class="actionBtn" (click)="toggleWebcam();">Toggle Webcam</button> -->
+    <br/>
+   <!-- <button class="actionBtn" (click)="showNextWebcam(true);" [disabled]="!multipleWebcamsAvailable">Next Webcam</button> -->
+
+    <br/>
+  </div>
+
+
+  <div class="inner camera" *ngIf="webcamImage">
+    <img [src]="this.imageDataBase"/>
+    <br/>
+    <button class="actionBtn" (click)="removeImage()">Verwijder</button>
+    <button class="actionBtn" (click)="addToImageList()">Toevoegen aan lijst</button>
+  </div>
+
+
+</div>

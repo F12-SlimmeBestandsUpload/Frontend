@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import { SharedService } from './services/shared.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  public images!: string[];
+  public blobImages: Blob[] = [];
+  constructor(private sharedService: SharedService) {
+    sharedService.changeEmitted$.subscribe((blob: any) => {
+      this.blobImages.push(blob)
+    });
+  } 
 }
+
