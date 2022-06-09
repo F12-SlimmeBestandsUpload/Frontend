@@ -3,6 +3,7 @@ import { ImageAndIndex } from '../shared/model/ImageAndIndex.model'
 import { SharedService } from '../services/shared.service';
 import { UploadService } from '../services/upload.service';
 import { EncryptionService} from "../../encryption-service/encryption.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-overview',
@@ -15,8 +16,12 @@ export class OverviewComponent implements OnInit {
   public selected: ImageAndIndex | undefined;
 
 
-  constructor(private sharedService: SharedService, private uploadService: UploadService,
-              private encryptionService: EncryptionService) {
+  constructor(
+    private sharedService: SharedService,
+    private uploadService: UploadService,
+    private encryptionService: EncryptionService,
+    private router: Router
+  ) {
 
     this.imageBlobs = sharedService.getBlobs()
   }
@@ -42,5 +47,6 @@ export class OverviewComponent implements OnInit {
 
     console.log(blobs);
     this.uploadService.upload(blobs, base64Key).subscribe();
+    await this.router.navigate(['end']);
   }
 }
