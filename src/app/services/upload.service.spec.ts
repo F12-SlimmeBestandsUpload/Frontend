@@ -9,12 +9,12 @@ describe('UploadService', () => {
   it('should upload', () => {
     const expectedJson = JSON.stringify({msg: "done"});
     const expectedObservable = new Observable((observer) => observer.next(expectedJson))
-    let mockService = {upload: (blobs: Blob[], id: string, key: string) => {
+    let mockService = {upload: (blobs: Blob[], iv: string, key: string) => {
         return expectedObservable
     }};
     let service = mockService as UploadService;
 
-    service.upload([], "").subscribe(json => {
+    service.upload([], "", "").subscribe(json => {
       expect(json).toEqual(expectedJson);
     });
 
