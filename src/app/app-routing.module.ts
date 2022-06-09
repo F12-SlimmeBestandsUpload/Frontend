@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CameraComponent } from "./camera/camera.component";
 import { OverviewComponent} from "./overview/overview.component";
+import {EndScreenComponent} from "./overview/end-screen/end-screen.component";
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'overview',
     component: OverviewComponent,
+  },
+  {
+    path: 'end',
+    component: EndScreenComponent,
   },
 ];
 
