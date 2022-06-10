@@ -16,11 +16,13 @@ socket.addEventListener('message', async function (event) {
 
   let Json = JSON.parse(event.data);
   console.log(Json)
-  let iv = Array.from(Json.iv)
+  let iv = JSON.parse(Json.iv)
+  iv = Uint8Array.from(iv);
   console.log(iv);
   let key = JSON.parse(Json.key)
+  console.log(key);
 
-  key = importSecretKey(Json.key)
+  key = await importSecretKey(key)
   console.log(key)
   let reference = Json["references"][0]
 
@@ -29,24 +31,28 @@ socket.addEventListener('message', async function (event) {
    getReference(reference, async function(blob){
      // let img = document.getElementById("tex");
      // img.src = "https://media.istockphoto.com/vectors/legal-document-vector-id166011405";
-      console.log(str2ab(blob))
-      blob = blob.arrayBuffer();
-
+      //console.log(str2ab(blob))
+     console.log(blob);
+      blob = await blob.arrayBuffer();
+      console.log(blob);
       try{
         blob = await window.crypto.subtle.decrypt({
           name: "AES-GCM",
           iv: iv
         }, key, blob)
       } catch(error){
-        console.log("huzzah")
+        console.log(error)
+        console.log("jex");
       }
-      let reader = new FileReader();
+      /*let reader = new FileReader();
       reader.readAsDataURL(blob);
       reader.onloadend = function() {
-      let base64data = reader.result;
-      let img = document.getElementById("tex");
-      img.src = base64data
-    }
+        let base64data = reader.result;
+        let img = document.getElementById("tex");
+        img.src = URL.createObjectUrl(new Blob([blob]));
+      }*/
+     let img = document.getElementById("tex");
+     img.src = URL.createObjectURL(new Blob([blob]));
 
    });
 })
@@ -63,7 +69,10 @@ function getReference(url, callback) {
   let xhr = new XMLHttpRequest();
   let ip = "http://" + getIpOfServer() + ":8000";
   xhr.open('get', ip + "/ttl-reference?ref=" + url);
+  xhr.responseType = "blob";
+  xhr.overrideMimeType('binary');
   xhr.onload = function () {
+    console.log(this.response);
     callback(this.response);
   };
   xhr.send();
@@ -78,10 +87,10 @@ function str2ab(str) {
   return buff;
 }
 
-async function importSecretKey(rawKey) {
+async function importSecretKey(jwk) {
   return await window.crypto.subtle.importKey(
     "jwk",
-    key,
+    jwk,
     {
       name: "AES-GCM",
     },
