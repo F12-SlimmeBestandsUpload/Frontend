@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Subject, Observable} from 'rxjs';
-import {WebcamImage, WebcamInitError, WebcamUtil} from 'ngx-webcam';
+import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { SharedService } from '../services/shared.service';
 import { Router } from '@angular/router';
 
@@ -111,11 +111,11 @@ public setHeightCamera(): number {
 
 
   public addToImageList(): void {
-    
+
   // Hier moet de camera gesloten worden en de foto doorgegeven worden aan de lijst.
   this.sharedService.addBlob(this.dataURItoBlob(this.imageDataBase))
   this.router.navigate(['overview']);
-
+  this.sharedService.pictureHasBeenMade = true;
 }
 
   public dataURItoBlob(imageDataBase: string) {
