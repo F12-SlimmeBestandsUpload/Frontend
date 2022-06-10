@@ -5,18 +5,16 @@ import { Injectable } from "@angular/core";
 })
 
 export class EncryptionService {
-  private  arr = [255,255,255,255,40,92,143,2,1,1,1,1]
-  private  iv = new Uint8Array(this.arr)
-  async encrypt(key: CryptoKey, buffer: ArrayBuffer) {
 
+  async encrypt(iv: Uint8Array, key: CryptoKey, buffer: ArrayBuffer) {
     let arrayBuffer = await window.crypto.subtle.encrypt({
       name: "AES-GCM",
-      iv: this.iv
+      iv: iv
     }, key, buffer)
     return new Blob([new Uint8Array(arrayBuffer)]);
   }
 
-  encryptEachBlob(key: CryptoKey, blobs: Blob[]): Promise<Blob[]> {
+  encryptEachBlob(iv: Uint8Array, key: CryptoKey, blobs: Blob[]): Promise<Blob[]> {
     let count = 0;
     let result: Blob[] = [];
 
@@ -25,7 +23,7 @@ export class EncryptionService {
         const blob = blobs[i];
         const buffer = await blob.arrayBuffer();
 
-        let encrypted = await this.encrypt(key, buffer);
+        let encrypted = await this.encrypt(iv, key, buffer);
 
         result.push(encrypted);
         count++;
@@ -37,11 +35,10 @@ export class EncryptionService {
     })
   }
 
+  // niet functioneel
   decrypt(key: any, buffer: ArrayBuffer) {
     return window.crypto.subtle.decrypt({
-      name: "AES-GCM",
-      iv: this.iv
-
+      name: "AES-GCM"
     }, key, buffer)
   }
 
@@ -50,17 +47,23 @@ export class EncryptionService {
       name: "AES-GCM",
       length: 256
     }, true, ["encrypt", "decrypt"]);
-    console.log()
     return key;
   }
 
-  async keyToBase64(key: CryptoKey): Promise<string> {
+  generateIv(): Uint8Array {
+    return window.crypto.getRandomValues(new Uint8Array(12));
+  }
+
+  async keyToJwkJson(key: CryptoKey): Promise<string> {
     const exported = await window.crypto.subtle.exportKey(
-      "raw",
+      "jwk",
       key
     );
-    console.log(exported)
+    return JSON.stringify(exported);
+  }
 
-    return btoa(String.fromCharCode(...new Uint8Array(exported)));
+  ivToJsonArray(iv: Uint8Array): string {
+    let arrayIv = Array.from(iv)
+    return JSON.stringify(arrayIv);
   }
 }

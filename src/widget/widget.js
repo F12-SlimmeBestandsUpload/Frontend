@@ -15,8 +15,13 @@ socket.addEventListener('message', async function (event) {
   }
 
   let Json = JSON.parse(event.data);
-  key = await importSecretKey(str2ab(atob(Json["key"])));
+  console.log(Json)
+  let iv = Array.from(Json.iv)
+  console.log(iv);
+  let key = JSON.parse(Json.key)
 
+  key = importSecretKey(Json.key)
+  console.log(key)
   let reference = Json["references"][0]
 
 
@@ -24,21 +29,20 @@ socket.addEventListener('message', async function (event) {
    getReference(reference, async function(blob){
      // let img = document.getElementById("tex");
      // img.src = "https://media.istockphoto.com/vectors/legal-document-vector-id166011405";
-    console.log(str2ab(blob))
-     blob = new Blob([new Uint8Array(str2ab(blob))]);
-     const arr = [255,255,255,255,40,92,143,2,1,1,1,1];
-     const iv = new Uint8Array(arr);
-     try{
-       blob = await window.crypto.subtle.decrypt({
-         name: "AES-GCM",
-         iv: iv
-       }, key, blob)
-     } catch(error){
-      console.log("huzzah")
-     }
-    let reader = new FileReader();
-    reader.readAsDataURL(blob);
-    reader.onloadend = function() {
+      console.log(str2ab(blob))
+      blob = blob.arrayBuffer();
+
+      try{
+        blob = await window.crypto.subtle.decrypt({
+          name: "AES-GCM",
+          iv: iv
+        }, key, blob)
+      } catch(error){
+        console.log("huzzah")
+      }
+      let reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onloadend = function() {
       let base64data = reader.result;
       let img = document.getElementById("tex");
       img.src = base64data
@@ -74,12 +78,17 @@ function str2ab(str) {
   return buff;
 }
 
-function importSecretKey(rawKey) {
-  return window.crypto.subtle.importKey(
-    "raw",
-    rawKey,
-    "AES-GCM",
+async function importSecretKey(rawKey) {
+  return await window.crypto.subtle.importKey(
+    "jwk",
+    key,
+    {
+      name: "AES-GCM",
+    },
     true,
-    ["encrypt", "decrypt"]
+    [
+      "encrypt",
+      "decrypt"
+    ]
   );
 }
