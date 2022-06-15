@@ -44,7 +44,6 @@ export class OverviewComponent implements OnInit {
     let key = await this.encryptionService.generateKey();
     let iv = this.encryptionService.generateIv();
     let blobs = await this.encryptBlob(iv, key);
-    console.log(await blobs[0].arrayBuffer())
     let jwk = await this.encryptionService.keyToJwkJson(key);
     let jsonIv = this.encryptionService.ivToJsonArray(iv);
     this.uploadService.upload(blobs, jsonIv, jwk).subscribe();
