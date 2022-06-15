@@ -6,9 +6,7 @@ import { Injectable } from "@angular/core";
 
 export class EncryptionService {
 
-  async encrypt(key: CryptoKey, buffer: ArrayBuffer) {
-    let iv = window.crypto.getRandomValues(new Uint8Array(12));
-
+  async encrypt(iv: Uint8Array, key: CryptoKey, buffer: ArrayBuffer) {
     let arrayBuffer = await window.crypto.subtle.encrypt({
       name: "AES-GCM",
       iv: iv
@@ -16,7 +14,7 @@ export class EncryptionService {
     return new Blob([new Uint8Array(arrayBuffer)]);
   }
 
-  encryptEachBlob(key: CryptoKey, blobs: Blob[]): Promise<Blob[]> {
+  encryptEachBlob(iv: Uint8Array, key: CryptoKey, blobs: Blob[]): Promise<Blob[]> {
     let count = 0;
     let result: Blob[] = [];
 
@@ -25,7 +23,7 @@ export class EncryptionService {
         const blob = blobs[i];
         const buffer = await blob.arrayBuffer();
 
-        let encrypted = await this.encrypt(key, buffer);
+        let encrypted = await this.encrypt(iv, key, buffer);
 
         result.push(encrypted);
         count++;
@@ -37,6 +35,7 @@ export class EncryptionService {
     })
   }
 
+  // niet functioneel
   decrypt(key: any, buffer: ArrayBuffer) {
     return window.crypto.subtle.decrypt({
       name: "AES-GCM"
@@ -51,11 +50,20 @@ export class EncryptionService {
     return key;
   }
 
-  async keyToBase64(key: CryptoKey): Promise<string> {
+  generateIv(): Uint8Array {
+    return window.crypto.getRandomValues(new Uint8Array(12));
+  }
+
+  async keyToJwkJson(key: CryptoKey): Promise<string> {
     const exported = await window.crypto.subtle.exportKey(
-      "raw",
+      "jwk",
       key
     );
-    return btoa(String.fromCharCode(...new Uint8Array(exported)));
+    return JSON.stringify(exported);
+  }
+
+  ivToJsonArray(iv: Uint8Array): string {
+    let arrayIv = Array.from(iv)
+    return JSON.stringify(arrayIv);
   }
 }
