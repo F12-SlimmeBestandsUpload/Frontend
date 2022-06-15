@@ -1,6 +1,6 @@
 let override= null;
 let connection_state = 0; //receiving QR=0, receiving imageInfo=1
-
+let references = [];
 let blobs = [];
 let selectedBlob;
 
@@ -17,6 +17,7 @@ socket.addEventListener('message', async function (event) {
 
   let [key, iv, references] = await parseJson(event.data);
 
+  this.references = references;
   for (const reference of references) {
     getReference(reference, async function (blob) {
 
@@ -29,7 +30,7 @@ socket.addEventListener('message', async function (event) {
       //initialize first image
       if( selectedBlob === undefined){
         changeSelection(0)
-     }
+      }
     });
   }
 })
@@ -125,4 +126,8 @@ function changeSelection(index){
 
 function addImage(blob){
   blobs.push(blob)
+}
+
+function getReferences(){
+  return this.references;
 }
