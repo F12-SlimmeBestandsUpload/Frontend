@@ -16,27 +16,7 @@ export class EncryptionService {
     return new Blob([new Uint8Array(arrayBuffer)]);
   }
 
-  encryptEachBlob(key: CryptoKey, blobs: Blob[]): Promise<Blob[]> {
-    let count = 0;
-    let result: Blob[] = [];
-
-    return new Promise(async (resolve) => {
-      for (let i = 0; i < blobs.length; i++) {
-        const blob = blobs[i];
-        const buffer = await blob.arrayBuffer();
-
-        let encrypted = await this.encrypt(key, buffer);
-
-        result.push(encrypted);
-        count++;
-
-        if (count == blobs.length) {
-          resolve(result);
-        }
-      }
-    })
-  }
-
+  // niet functioneel
   decrypt(key: any, buffer: ArrayBuffer) {
     return window.crypto.subtle.decrypt({
       name: "AES-GCM"
@@ -44,11 +24,10 @@ export class EncryptionService {
   }
 
   async generateKey() {
-    let key = await window.crypto.subtle.generateKey({
+    return await window.crypto.subtle.generateKey({
       name: "AES-GCM",
       length: 256
     }, true, ["encrypt", "decrypt"]);
-    return key;
   }
 
   async keyToBase64(key: CryptoKey): Promise<string> {
@@ -58,4 +37,51 @@ export class EncryptionService {
     );
     return btoa(String.fromCharCode(...new Uint8Array(exported)));
   }
+
+  getEachBlob(blobs: Blob[]): Blob {
+    let count = 0;
+    let result: Blob[] = [];
+
+    for (let i = 0; i < blobs.length; i++) {
+      const blob = blobs[i];
+      result.push(blob);
+      count++
+
+      if (count == blobs.length) {
+        return result[i];
+      }
+    }
+    return result[0];
+  }
+
+  encryptEachBlob(iv: Uint8Array, key: CryptoKey, blobs: Blob[]) {
+    let blob = this.getEachBlob(blobs);
+
+    return new Promise(async (resolve) => {
+      const buffer = blob.arrayBuffer();
+      await this.encrypt(iv, key, await buffer);
+      resolve(blob);
+    })
+  }
+
+  // encryptEachBlob(iv: Uint8Array, key: CryptoKey, blobs: Blob[]): Promise<Blob[]> {
+  //   let count = 0;
+  //   let result: Blob[] = [];
+  //
+  //   return new Promise(async (resolve) => {
+  //     for (let i = 0; i < blobs.length; i++) {
+  //       const blob = blobs[i];
+  //       const buffer = await blob.arrayBuffer();
+  //
+  //       let encrypted = await this.encrypt(iv, key, buffer);
+  //
+  //       result.push(encrypted);
+  //       count++;
+  //
+  //       if (count == blobs.length) {
+  //         resolve(result);
+  //       }
+  //     }
+  //   })
+  // }
 }
