@@ -43,11 +43,11 @@ export class OverviewComponent implements OnInit {
   async uploadBlobs(){
     let key = await this.encryptionService.generateKey();
     let iv = this.encryptionService.generateIv();
-    let blobs = await this.encryptBlob(iv, key);
+    let encryptedBlobs = await this.encryptBlob(iv, key);
     let jwk = await this.encryptionService.keyToJwkJson(key);
     let jsonIv = this.encryptionService.ivToJsonArray(iv);
 
-    this.uploadService.upload(blobs, jsonIv, jwk).subscribe();
+    this.uploadService.upload(encryptedBlobs, jsonIv, jwk).subscribe();
     await this.router.navigate(['end']);
   }
 }
