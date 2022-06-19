@@ -16,7 +16,7 @@ export class EncryptionService {
     return new Blob([new Uint8Array(arrayBuffer)]);
   }
 
-  // niet functioneel
+  // not functional
   decrypt(key: any, buffer: ArrayBuffer) {
     return window.crypto.subtle.decrypt({
       name: "AES-GCM"
@@ -54,12 +54,13 @@ export class EncryptionService {
     return result[0];
   }
 
-  encryptEachBlob(iv: Uint8Array, key: CryptoKey, blobs: Blob[]) {
+  encryptEachBlob(key: CryptoKey, blobs: Blob[]) {
     let blob = this.getEachBlob(blobs);
+    let iv: Uint8Array = window.crypto.getRandomValues(new Uint8Array(12));
 
     return new Promise(async (resolve) => {
       const buffer = blob.arrayBuffer();
-      await this.encrypt(iv, key, await buffer);
+      await this.encrypt(key, await buffer);
       resolve(blob);
     })
   }
