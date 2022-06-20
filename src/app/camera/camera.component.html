@@ -13,9 +13,11 @@
     ></webcam>
     <br/>
     <button class=" actionBtn" (click)="triggerSnapshot();">Maak foto</button>
-    <!-- <button class="actionBtn" (click)="toggleWebcam();">Toggle Webcam</button> -->
+    <input #imageInput
+           type="file"
+           accept="image/*"
+           (change)="processImage(imageInput)">
     <br/>
-   <!-- <button class="actionBtn" (click)="showNextWebcam(true);" [disabled]="!multipleWebcamsAvailable">Next Webcam</button> -->
 
     <br/>
   </div>
