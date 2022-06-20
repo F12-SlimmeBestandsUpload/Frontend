@@ -13,15 +13,18 @@
     ></webcam>
     <br/>
     <button class=" actionBtn" (click)="triggerSnapshot();">Maak foto</button>
-    <input #imageInput
-           type="file"
-           accept="image/*"
-           (change)="processImage(imageInput)">
-    <br/>
+    <label class="actionBtn" id="galeryButton">
+      <input #imageInput
+             type="file"
+             accept="image/*"
+             (change)="processImage(imageInput)"
+      />
+      Upload Foto
+    </label>
 
+    <br/>
     <br/>
   </div>
-
 
   <div class="inner camera" *ngIf="webcamImage">
     <img [src]="this.imageDataBase"/>
@@ -29,6 +32,5 @@
     <button class="actionBtn" (click)="removeImage()">Verwijder</button>
     <button class="actionBtn" (click)="addToImageList()">Toevoegen aan lijst</button>
   </div>
-
 
 </div>
