@@ -21,13 +21,21 @@ export class idService {
   }
 
   private async getIdThroughSubscription(): Promise<string>{
-    return new Promise<string>((resolve) => {
-      this.router.queryParams.subscribe(params => {
-          if(params["id"]!=undefined) {
-            resolve(params["id"]);
-          }
-        }
-      );
-    });
+    return this.createIdPromise();
+    }
+
+  private createIdPromise(){
+    return new Promise<string>(async (resolve) =>  {
+        resolve(await this.subscribeToRouteAndGetId())
+      }
+    )
+  }
+
+  private async subscribeToRouteAndGetId(){
+    return new Promise<string>((resolve) => {this.router.queryParams.subscribe(params => {
+      if(params["id"]!=undefined) {
+        resolve(params["id"]);
+      }}
+    )})
   }
 }

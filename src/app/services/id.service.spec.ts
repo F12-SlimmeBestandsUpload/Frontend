@@ -23,7 +23,7 @@ describe('IdService', () => {
     expect(service).toBeTruthy();
   });
 
-  it("test for id",
+  it("test",
     fakeAsync( () => {
       let idFromRoute:String ="";
 
@@ -37,7 +37,6 @@ describe('IdService', () => {
       expect(idFromRoute).toEqual(id.toString());
     }
     )
-
   )
 
 })
