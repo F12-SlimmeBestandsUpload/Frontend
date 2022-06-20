@@ -17,20 +17,19 @@ export class CameraComponent implements OnInit {
   public multipleWebcamsAvailable = false;
   public screenWidth = screen.width;
   public videoOptions: MediaTrackConstraints = {
-    // width: {ideal: 1024},
-    // height: {ideal: 576}
   };
   public errors: WebcamInitError[] = [];
 
   // Huidige foto die op de sesse is opgeslagen
   public webcamImage: WebcamImage = null as any;
 
-
+  // De dataurl van een gemaakt foto
   public imageDataBase!: string;
+  // Een foto opgehaald uit de galerij
+  public file!: File;
 
   // webcam snapshot trigger
   private trigger: Subject<void> = new Subject<void>();
-  // Om te switchen naar andere camera. Niet zeker of eht nuttig is.
   private nextWebcam: Subject<boolean|string> = new Subject<boolean|string>();
   private router: Router;
 
@@ -45,8 +44,6 @@ export class CameraComponent implements OnInit {
         this.multipleWebcamsAvailable = mediaDevices && mediaDevices.length > 1;
       });
 
-
-
   }
 
   public triggerSnapshot(): void {
@@ -55,11 +52,6 @@ export class CameraComponent implements OnInit {
 
   public handleInitError(error: WebcamInitError): void {
     this.errors.push(error);
-  }
-
-  public showNextWebcam(directionOrDeviceId: boolean|string): void {
-    // om te switchen tussen voor en achter camera. Niet zeker of dit nuttig is dus wacht ff met uitwerken.
-    this.nextWebcam.next(directionOrDeviceId);
   }
 
   public handleImage(webcamImage: WebcamImage): void {
@@ -82,8 +74,10 @@ export class CameraComponent implements OnInit {
     this.webcamImage = null as any;
   }
 
-
 public setWidthCamera(): number{
+
+    //Responsiveness van de camera word hier geregeld.
+
     if(this.screenWidth < 900  && this.screenWidth > 500){
 
       return 400
@@ -98,6 +92,9 @@ public setWidthCamera(): number{
 }
 
 public setHeightCamera(): number {
+
+  //Responsiveness van de camera word hier geregeld.
+
   if(this.screenWidth < 900 && this.screenWidth > 500){
     return 400
 
@@ -110,7 +107,6 @@ public setHeightCamera(): number {
   }
 }
 
-
   public addToImageList(): void {
 
   // Hier moet de camera gesloten worden en de foto doorgegeven worden aan de lijst.
@@ -120,6 +116,8 @@ public setHeightCamera(): number {
 }
 
   public dataURItoBlob(imageDataBase: string) {
+
+    // Datauri van een gemaakte foto word hier omgezet naar een blob.
 
     const byteString = atob(imageDataBase.split(',')[1]);
 
@@ -136,5 +134,17 @@ public setHeightCamera(): number {
     // write the ArrayBuffer to a blob, and you're done
     const blob = new Blob([ab], {type: mimeString});
     return blob;
+  }
+
+
+  public processImage(imageInput: HTMLInputElement) {
+    // Een foto van de galerij word hier geladen.
+
+    // @ts-ignore
+    this.file= imageInput.files[0];
+
+    this.sharedService.addBlob(this.file);
+    this.router.navigate(['overview']);
+
   }
 }
