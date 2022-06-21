@@ -1,8 +1,8 @@
 //settable variables
-let ipServer = "localhost";
+let ipServer = "safe-medium.com";
 let portServer = "8000" ;
 let portWebsocket = "6969" ;
-let httpVSHttps = "http";
+let httpVSHttps = "https";
 
 let override= null;
 let connection_state = 0; //receiving QR=0, receiving imageInfo=1
@@ -11,7 +11,7 @@ let blobs = [];
 let selectedBlob;
 
 
-const socket = new WebSocket('ws://'+ipServer+":"+portWebsocket);
+const socket = new WebSocket('wss://'+ipServer+":"+portWebsocket);
 socket.addEventListener('message', async function (event) {
 
   if (connection_state == 0) {
