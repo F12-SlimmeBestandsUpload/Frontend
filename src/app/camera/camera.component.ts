@@ -130,6 +130,7 @@ public setHeightCamera(): number {
 
     this.sharedService.addBlob(this.dataURItoBlob(this.imageDataBase));
     this.removeCameraImage();
+    this.sharedService.pictureHasBeenMade = true;
     this.router.navigate(['overview']);
 
 }
@@ -140,6 +141,7 @@ public addGaleryImageToList(): void{
 
   this.sharedService.addBlob(this.file);
   this.removeGaleryImage();
+  this.sharedService.pictureHasBeenMade = true;
   this.router.navigate(['overview']);
 }
 
