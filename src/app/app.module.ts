@@ -12,6 +12,7 @@ import { ImageOverviewComponent } from './overview/image-overview/image-overview
 import { ImageElementComponent } from './overview/image-overview/image-element/image-element.component';
 import { EnlargedImageComponent } from './overview/enlarged-image/enlarged-image.component';
 import { WebcamModule } from "ngx-webcam";
+import { EndScreenComponent } from './overview/end-screen/end-screen.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { WebcamModule } from "ngx-webcam";
     TopBarComponent,
     ImageOverviewComponent,
     ImageElementComponent,
-    EnlargedImageComponent
+    EnlargedImageComponent,
+    EndScreenComponent
   ],
   imports: [
     BrowserModule,
