@@ -34,6 +34,7 @@ export class ImageElementComponent implements OnInit {
 
   selectImage(){
     this.SendSelectedImage.emit(this.imageAndIndex);
+    console.log(this.imageAndIndex)
   }
 
 }

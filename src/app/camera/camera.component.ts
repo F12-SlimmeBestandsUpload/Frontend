@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Subject, Observable} from 'rxjs';
 import {WebcamImage, WebcamInitError, WebcamUtil} from 'ngx-webcam';
 import { SharedService } from '../services/shared.service';
@@ -19,20 +19,22 @@ export class CameraComponent implements OnInit {
   };
   public errors: WebcamInitError[] = [];
 
+
   // Huidige foto die op de sesse is opgeslagen
   public webcamImage: WebcamImage = null as any;
-
+  public blobs!: Blob[]
   // De dataurl van een gemaakt foto
   public imageDataBase!: string;
   // Een foto opgehaald uit de galerij
   public file!: File;
+  public fileImageData!: string;
 
   // webcam snapshot trigger
   private trigger: Subject<void> = new Subject<void>();
   private nextWebcam: Subject<boolean|string> = new Subject<boolean|string>();
   private router: Router;
 
-  constructor(private sharedService: SharedService, router: Router){
+  constructor( private sharedService: SharedService, router: Router){
     this.router = router;
 
   }
@@ -43,6 +45,9 @@ export class CameraComponent implements OnInit {
         this.multipleWebcamsAvailable = mediaDevices && mediaDevices.length > 1;
       });
 
+    this.blobs = this.sharedService.getBlobs();
+
+    console.log(this.blobs)
   }
 
   public triggerSnapshot(): void {
@@ -57,6 +62,9 @@ export class CameraComponent implements OnInit {
     console.info('received webcam image', webcamImage);
     this.webcamImage = webcamImage;
     this.imageDataBase = webcamImage.imageAsDataUrl;
+
+
+
   }
 
 
@@ -68,9 +76,16 @@ export class CameraComponent implements OnInit {
     return this.nextWebcam.asObservable();
   }
 
-  public removeImage(): void {
+  public removeCameraImage(): void {
     // huidige foto van de sessie word verwijdert en user kan een nieuwe maken.
     this.webcamImage = null as any;
+    this.imageDataBase = null as any;
+  }
+
+  public removeGaleryImage(): void {
+    // huidige foto van de sessie word verwijdert en user kan een nieuwe maken.
+    this.file = null as any;
+    this.fileImageData = null as any;
   }
 
 public setWidthCamera(): number{
@@ -106,13 +121,25 @@ public setHeightCamera(): number {
   }
 }
 
-  public addToImageList(): void {
+  public addCameraImageToList(): void {
 
-  // Hier moet de camera gesloten worden en de foto doorgegeven worden aan de lijst.
-  this.sharedService.addBlob(this.dataURItoBlob(this.imageDataBase))
-  this.router.navigate(['overview']);
+  // Hier moet een foto die gemaakt is met de camera gestuurd worden naar de lijst.
+
+    this.sharedService.addBlob(this.dataURItoBlob(this.imageDataBase));
+    this.removeCameraImage();
+    this.router.navigate(['overview']);
 
 }
+
+public addGaleryImageToList(): void{
+
+  // Hier moet een foto die geladen is uit de galerij gestuurd worden naar de lijst.
+
+  this.sharedService.addBlob(this.file);
+  this.removeGaleryImage();
+  this.router.navigate(['overview']);
+}
+
 
   public dataURItoBlob(imageDataBase: string) {
 
@@ -139,11 +166,26 @@ public setHeightCamera(): number {
   public processImage(imageInput: HTMLInputElement) {
     // Een foto van de galerij word hier geladen.
 
-    // @ts-ignore
-    this.file= imageInput.files[0];
+    const file:  File = imageInput.files![0]
+    const reader = new FileReader();
 
-    this.sharedService.addBlob(this.file);
+    this.file = file;
+
+
+    reader.addEventListener('load', (event: any) =>{
+
+      this.fileImageData = event.target.result;
+
+    })
+
+    reader.readAsDataURL(file);
+  }
+
+
+  public cancel() {
+    this.removeCameraImage();
+    this.removeGaleryImage();
+
     this.router.navigate(['overview']);
-
   }
 }
