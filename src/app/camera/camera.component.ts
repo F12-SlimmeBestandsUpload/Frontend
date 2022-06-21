@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Subject, Observable} from 'rxjs';
-import {WebcamImage, WebcamInitError, WebcamUtil} from 'ngx-webcam';
+import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { SharedService } from '../services/shared.service';
 import { Router } from '@angular/router';
+import {idService} from "../services/id.service";
 
 
 @Component({
@@ -34,7 +35,9 @@ export class CameraComponent implements OnInit {
   private nextWebcam: Subject<boolean|string> = new Subject<boolean|string>();
   private router: Router;
 
-  constructor( private sharedService: SharedService, router: Router){
+
+  constructor(private sharedService: SharedService, router: Router, idService: idService){
+
     this.router = router;
 
   }

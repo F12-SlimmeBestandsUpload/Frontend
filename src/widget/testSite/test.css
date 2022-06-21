@@ -1,0 +1,26 @@
+iframe{
+  width: 600px;
+  height: 600px;
+  border-width: 0;
+}
+
+body{
+  background: rgb(122,3,125);
+  background: linear-gradient(150deg, rgba(122,3,125,1) 0%, rgba(175,133,246,1) 33%, rgba(100,100,255,1) 65%, rgba(59,104,154,1) 100%);
+  min-width: 100%;
+  min-height: 100vh;
+}
+
+
+#output{
+  width: 300px;
+  height: 400px;
+  background: white;
+  border-radius: 10px;
+  border-color: black;
+  border-style: solid;
+  word-wrap: break-word;
+}
+body{
+  display: flex;
+}

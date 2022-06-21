@@ -7,7 +7,6 @@ import {CookieService} from "ngx-cookie-service";
 export class idService {
   private id:string = "";
   constructor(private router: ActivatedRoute, private cookieService: CookieService) {
-
     this.getIdThroughSubscription().then((string) => {
       this.id = string;
       cookieService.set("id", string);

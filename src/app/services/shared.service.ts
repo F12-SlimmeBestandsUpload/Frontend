@@ -12,8 +12,9 @@ export class SharedService {
   private emitChangeSource = new Subject<any>();
   public blobs: Blob[] = []
   public router: Router;
+  public pictureHasBeenMade = false;
 
-  constructor(router: Router) { 
+  constructor(router: Router) {
     this.router = router;
   }
 
