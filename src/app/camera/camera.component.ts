@@ -50,7 +50,6 @@ export class CameraComponent implements OnInit {
 
     this.blobs = this.sharedService.getBlobs();
 
-    console.log(this.blobs)
   }
 
   public triggerSnapshot(): void {
