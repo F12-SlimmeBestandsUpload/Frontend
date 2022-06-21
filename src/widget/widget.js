@@ -2,7 +2,7 @@
 let ipServer = "localhost";
 let portServer = "8000" ;
 let portWebsocket = "6969" ;
-let httpVSHttps = "https";
+let httpVSHttps = "http";
 
 let override= null;
 let connection_state = 0; //receiving QR=0, receiving imageInfo=1

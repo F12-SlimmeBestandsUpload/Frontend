@@ -1,6 +1,15 @@
+let ipServer = "localhost";
+let portServer = "8000" ;
+let httpVSHttps = "http";
+
 let keyElement = document.getElementById('key');
 let ivElement = document.getElementById('iv');
 let referencesElement = document.getElementById('references');
+
+let key;
+let keyString;
+let iv;
+let references = ["5ee5d7cf-b1ff-4aeWOAHc-bd5e-97894d6b2709", "5ee5d7cf-b1ff-4aec-bd5e-97894d6b2709"];
 
 window.addEventListener("message", async (event) => {
   // extract the data from the message event
@@ -14,6 +23,18 @@ window.addEventListener("message", async (event) => {
       ivElement.innerHTML += ", "+data2.iv[each];
     }
   }
-
   referencesElement.innerHTML += data2.references;
+  key = data2.key;
+  keyString = data2.keyString;
+  iv = data2.iv;
+  references = data2.references;
 });
+
+function accept(){
+    let xhr = new XMLHttpRequest();
+    let ip = httpVSHttps+"://" + ipServer + ":"+portServer;
+    xhr.open('post', ip + "/finalize");
+    xhr.setRequestHeader('Content-type', 'application/json');
+    let data = {"reference": references};
+    xhr.send(JSON.stringify(data));
+}
