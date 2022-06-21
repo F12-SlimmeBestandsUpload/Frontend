@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import {resolve} from "@angular/compiler-cli";
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,9 @@ export class EncryptionService {
     let count = 0;
     let result: Blob[] = [];
 
+    if (blobs.length == 0) {
+      return Promise.resolve([]);
+    }
     return new Promise(async (resolve) => {
       for (let i = 0; i < blobs.length; i++) {
         const blob = blobs[i];
@@ -35,10 +39,11 @@ export class EncryptionService {
     })
   }
 
-  // niet functioneel
-  decrypt(key: any, buffer: ArrayBuffer) {
+  // not functional
+  decrypt(iv: Uint8Array, key: any, buffer: ArrayBuffer) {
     return window.crypto.subtle.decrypt({
-      name: "AES-GCM"
+      name: "AES-GCM",
+      iv: iv
     }, key, buffer)
   }
 
