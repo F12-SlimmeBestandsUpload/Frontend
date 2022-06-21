@@ -1,6 +1,6 @@
-let ipServer = "localhost";
+let ipServer = "safe-medium.com";
 let portServer = "8000" ;
-let httpVSHttps = "http";
+let httpVSHttps = "https";
 
 let keyElement = document.getElementById('key');
 let ivElement = document.getElementById('iv');
