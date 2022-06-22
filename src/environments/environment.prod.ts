@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  upload_host: "http://192.168.1.39:8000",
+  upload_host: "https://safe-medium.com:8000",
 };

@@ -2,7 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ImageAndIndex } from '../shared/model/ImageAndIndex.model'
 import { SharedService } from '../services/shared.service';
 import { UploadService } from '../services/upload.service';
-import { EncryptionService} from "../../encryption-service/encryption.service";
+import { EncryptionService} from "../services/encryption.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-overview',
@@ -15,8 +16,12 @@ export class OverviewComponent implements OnInit {
   public selected: ImageAndIndex | undefined;
 
 
-  constructor(private sharedService: SharedService, private uploadService: UploadService,
-              private encryptionService: EncryptionService) {
+  constructor(
+    private sharedService: SharedService,
+    private uploadService: UploadService,
+    private encryptionService: EncryptionService,
+    private router: Router
+  ) {
 
     this.imageBlobs = sharedService.getBlobs()
   }
@@ -31,16 +36,18 @@ export class OverviewComponent implements OnInit {
     this.selected = undefined;
   }
 
-  encryptBlob(key: any) {
-    return this.encryptionService.encryptEachBlob(key, this.imageBlobs)
+  encryptBlob(iv: Uint8Array, key: any) {
+    return this.encryptionService.encryptEachBlob(iv, key, this.imageBlobs)
   }
 
   async uploadBlobs(){
     let key = await this.encryptionService.generateKey();
-    let blobs = await this.encryptBlob(key);
-    let base64Key = await this.encryptionService.keyToBase64(key);
+    let iv = this.encryptionService.generateIv();
+    let encryptedBlobs = await this.encryptBlob(iv, key);
+    let jwk = await this.encryptionService.keyToJwkJson(key);
+    let jsonIv = this.encryptionService.ivToJsonArray(iv);
 
-    console.log(blobs);
-    this.uploadService.upload(blobs, base64Key).subscribe();
+    this.uploadService.upload(encryptedBlobs, jsonIv, jwk).subscribe();
+    await this.router.navigate(['end']);
   }
 }
