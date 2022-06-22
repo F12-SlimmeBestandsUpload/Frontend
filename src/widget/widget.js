@@ -20,8 +20,6 @@ socket.addEventListener('message', async function (event) {
     connection_state = 1;
     return
   }
-  this.references = [];
-  blobs = [];
 
   let [keyString, key, iv, references] = await parseJson(event.data);
   const data = {};
@@ -34,22 +32,18 @@ socket.addEventListener('message', async function (event) {
     request: { data },
   };
   parent.postMessage(response);
-
   this.references = references;
   for (const reference of references) {
     getReference(reference, async function (blob) {
-
-      blob = await blob.arrayBuffer();
-
-      let decryptedBlob = await decrypt(blob, key, iv)
-
+      let arrayBuffer = await blob.arrayBuffer();
+      let decryptedBlob = await decrypt(arrayBuffer, key, iv)
       addImage(decryptedBlob)
 
       //initialize first image
-      if( selectedBlob === undefined){
-        changeSelection(0)
-      }
+      changeSelection(0)
     });
+    //wait so XHR doesn't get confused otherwise data get scrambled causing a DOMexception due to decryption failing
+    await new Promise(r => setTimeout(r, 2000));
   }
 })
 
@@ -103,8 +97,10 @@ async function decrypt(blob, key, iv){
 }
 
 
+
 // image selection
 function goLeft(){
+  console.log(selectedBlob)
   if(selectedBlob=== undefined){
     return
   }
@@ -117,6 +113,7 @@ function goLeft(){
 }
 
 function goRight(){
+  console.log(selectedBlob)
   if(selectedBlob=== undefined){
     return
   }
