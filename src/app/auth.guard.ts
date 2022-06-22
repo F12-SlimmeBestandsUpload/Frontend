@@ -8,7 +8,7 @@ import { SharedService } from "./services/shared.service";
 })
 export class AuthGuard implements CanActivate {
 
-  private allowToOverview: boolean = this.sharedService.pictureHasBeenMade;
+  private allowToOverview: boolean | undefined;
 
   constructor( private route: Router, private sharedService: SharedService
   ) {}
@@ -19,9 +19,12 @@ export class AuthGuard implements CanActivate {
     Observable<boolean> |
     Promise<boolean> |
     boolean {
-    if (!this.allowToOverview) {
-      this.route.navigate(['']);
+    if (this.sharedService.blobs.length > 0) {
+      this.allowToOverview = true;
+      return this.allowToOverview;
+    } else {
+      this.route.navigate(['camera']);
     }
-    return this.allowToOverview;
+    return true;
   }
 }
