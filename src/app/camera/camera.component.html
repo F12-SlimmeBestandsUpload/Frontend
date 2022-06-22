@@ -4,7 +4,7 @@
       <p id="headerText">Maak een foto van uw document</p>
   </div>
 
-  <div class="inner camera" *ngIf="!webcamImage">
+  <div class="inner camera" *ngIf="!webcamImage && !file">
     <webcam [height]="setHeightCamera()" [width]="setWidthCamera()" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
             [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable"
             [videoOptions]="videoOptions"
@@ -21,6 +21,8 @@
       />
       Upload Foto
     </label>
+    <br>
+    <button *ngIf="blobs.length" class="actionBtn" (click)="cancel()">Cancel</button>
 
     <br/>
     <br/>
@@ -29,8 +31,16 @@
   <div class="inner camera" *ngIf="webcamImage">
     <img [src]="this.imageDataBase"/>
     <br/>
-    <button class="actionBtn" (click)="removeImage()">Verwijder</button>
-    <button class="actionBtn" (click)="addToImageList()">Toevoegen aan lijst</button>
+    <button class="actionBtn" (click)="removeCameraImage()">Verwijder</button>
+    <button class="actionBtn" (click)="addCameraImageToList()">Toevoegen aan lijst</button>
+  </div>
+
+
+  <div class="inner camera" *ngIf="file">
+    <img [src]="this.fileImageData"/>
+    <br/>
+    <button class="actionBtn" (click)="removeGaleryImage()">Verwijder</button>
+    <button class="actionBtn" (click)="addGaleryImageToList()">Toevoegen aan lijst</button>
   </div>
 
 </div>

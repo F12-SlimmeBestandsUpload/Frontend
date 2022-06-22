@@ -1,3 +1,9 @@
+//settable variables
+let ipServer = "safe-medium.com";
+let portServer = "8000" ;
+let portWebsocket = "6969" ;
+let httpVSHttps = "https";
+
 let override= null;
 let connection_state = 0; //receiving QR=0, receiving imageInfo=1
 let references = [];
@@ -5,7 +11,7 @@ let blobs = [];
 let selectedBlob;
 
 
-const socket = new WebSocket('ws://'+getIpOfServer()+':6969');
+const socket = new WebSocket('wss://'+ipServer+":"+portWebsocket);
 socket.addEventListener('message', async function (event) {
 
   if (connection_state == 0) {
@@ -15,33 +21,31 @@ socket.addEventListener('message', async function (event) {
     return
   }
 
-  let [key, iv, references] = await parseJson(event.data);
-
+  let [keyString, key, iv, references] = await parseJson(event.data);
+  const data = {};
+  data.iv = iv;
+  data.key = key;
+  data.keyString = keyString;
+  data.references = references;
+  const response = {
+    success: true,
+    request: { data },
+  };
+  parent.postMessage(response);
   this.references = references;
   for (const reference of references) {
     getReference(reference, async function (blob) {
-
-      blob = await blob.arrayBuffer();
-
-      let decryptedBlob = await decrypt(blob, key, iv)
-
+      let arrayBuffer = await blob.arrayBuffer();
+      let decryptedBlob = await decrypt(arrayBuffer, key, iv)
       addImage(decryptedBlob)
 
       //initialize first image
-      if( selectedBlob === undefined){
-        changeSelection(0)
-      }
+      changeSelection(0)
     });
+    //wait so XHR doesn't get confused otherwise data get scrambled causing a DOMexception due to decryption failing
+    await new Promise(r => setTimeout(r, 2000));
   }
 })
-
-function getIpOfServer(){
-  let ipPlusRoute = location.hostname;
-  if(override!= null){
-    ipPlusRoute = override;
-  }
-  return ipPlusRoute;
-}
 
 async function parseJson(data){
   //parse as Json
@@ -51,10 +55,11 @@ async function parseJson(data){
   iv = Uint8Array.from(iv);
   //parse the key
   let key = JSON.parse(Json.key)
+  let keyString = key.k;
   key = await importSecretKey(key)
   //get references
   let references = Json["references"]
-  return [key, iv, references]
+  return [keyString, key, iv, references]
 }
 
 async function importSecretKey(jwk) {
@@ -74,7 +79,7 @@ async function importSecretKey(jwk) {
 
 function getReference(url, callback) {
   let xhr = new XMLHttpRequest();
-  let ip = "http://" + getIpOfServer() + ":8000";
+  let ip = httpVSHttps+"://" + ipServer + ":"+portServer;
   xhr.open('get', ip + "/ttl-reference?ref=" + url);
   xhr.responseType = "blob";
   xhr.overrideMimeType('binary');
@@ -92,8 +97,10 @@ async function decrypt(blob, key, iv){
 }
 
 
+
 // image selection
 function goLeft(){
+  console.log(selectedBlob)
   if(selectedBlob=== undefined){
     return
   }
@@ -106,6 +113,7 @@ function goLeft(){
 }
 
 function goRight(){
+  console.log(selectedBlob)
   if(selectedBlob=== undefined){
     return
   }
@@ -128,6 +136,3 @@ function addImage(blob){
   blobs.push(blob)
 }
 
-function getReferences(){
-  return this.references;
-}
