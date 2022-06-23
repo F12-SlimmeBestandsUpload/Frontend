@@ -1,4 +1,3 @@
-import { Observable } from "rxjs";
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
 import { Router } from "@angular/router";
@@ -12,7 +11,6 @@ export class SharedService {
   private emitChangeSource = new Subject<any>();
   public blobs: Blob[] = []
   public router: Router;
-  public pictureHasBeenMade = false;
 
   constructor(router: Router) {
     this.router = router;
